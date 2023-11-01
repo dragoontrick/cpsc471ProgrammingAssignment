@@ -7,6 +7,11 @@ Write a README ﬁle (text ﬁle, do not submit a .doc ﬁle) which contains
   How to execute your
   Anything special about your submission that we should take note
 
-Name: Tommy Ly        Email Address: lytommy321@csu.fullerton.edu
-Name: Diego Barrales  Email Address: 
-Name: Kevin Cacho     Email Address:  
+Name: Tommy Ly       
+Email Address: lytommy321@csu.fullerton.edu
+
+Name: Diego Barrales 
+Email Address: 
+
+Name: Kevin Cacho     
+Email Address:  
