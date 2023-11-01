@@ -11,7 +11,7 @@ Name: Tommy Ly
 Email Address: lytommy321@csu.fullerton.edu
 
 Name: Diego Barrales 
-Email Address: 
+Email Address: diego.barrales@csu.fullerton.edu
 
 Name: Kevin Cacho     
 Email Address: kicacho@csu.fullerton.edu 
