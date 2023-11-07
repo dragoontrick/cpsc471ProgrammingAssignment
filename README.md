@@ -10,7 +10,7 @@ Write a README ﬁle (text ﬁle, do not submit a .doc ﬁle) which contains
 Name: Tommy Ly       
 Email Address: lytommy321@csu.fullerton.edu
 
-Name: Diego Barrales 
+Name: Diego Barrales      
 Email Address: diego.barrales@csu.fullerton.edu
 
 Name: Kevin Cacho     
