@@ -29,7 +29,8 @@ welcomeSock.listen(1)
 def recvAll(sock, numBytes):
 
 	# The buffer
-	recvBuff = ""
+	recvBuff = b""
+	#recvBuff = ""
 	
 	# The temporary buffer
 	tmpBuff = ""
@@ -72,14 +73,17 @@ while True:
 	fileSize = 0	
 	
 	# The buffer containing the file size
-	fileSizeBuff = ""
+	# fileSizeBuff = ""
+	fileSizeBuff = None
+
 	
 	# Receive the first 10 bytes indicating the
 	# size of the file
 	fileSizeBuff = recvAll(clientSock, 10)
 		
 	# Get the file size
-	fileSize = int(fileSizeBuff)
+	fileSize = int(fileSizeBuff.decode())
+	#fileSize = int(fileSizeBuff)
 	
 	print ("The file size is ", fileSize)
 	

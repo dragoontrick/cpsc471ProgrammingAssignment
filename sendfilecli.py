@@ -11,7 +11,7 @@ import sys
 
 # Command line checks 
 if len(sys.argv) < 2:
-	print ("USAGE python " + sys.argv[0] + " <FILE NAME>") 
+	print ("USAGE python3 " + sys.argv[0] + " <FILE NAME>") 
 
 # Server address
 serverAddr = "localhost"
@@ -35,7 +35,7 @@ connSock.connect((serverAddr, serverPort))
 numSent = 0
 
 # The file data
-fileData = file.txt    #None
+fileData = "file.txt"
 
 # Keep sending until all is sent
 while True:
@@ -46,7 +46,6 @@ while True:
 	# Make sure we did not hit EOF
 	if fileData:
 		
-			
 		# Get the size of the data read
 		# and convert it to string
 		dataSizeStr = str(len(fileData))
@@ -66,7 +65,7 @@ while True:
 		
 		# Send the data!
 		while len(fileData) > numSent:
-			numSent += connSock.send(fileData[numSent:])
+			numSent += connSock.send(fileData[numSent:].encode())
 	
 	# The file has been read. We are done
 	else:
