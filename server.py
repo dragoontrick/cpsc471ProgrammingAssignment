@@ -2,6 +2,11 @@
 import socket
 import send_file 
 
+#
+import os
+import pickle
+#
+
 # The port on which to listen
 serverPort = 1234
 
@@ -25,6 +30,18 @@ while True:
   print("Accepted connection from client: ", addr)
   # Receive whatever the newly connected client has to send
   data = connectionSocket.recv(40)
+
+  if data.decode("utf-8") == "ls":
+    filenames = os.listdir('serverfiles')
+    print(filenames)
+
+    filenames_string = '\n'.join(filenames)
+
+    send_file.sendData(connectionSocket, filenames_string)
+
+    #filenames_bytes = pickle.dumps(filenames)
+    #send_file.sendFileNames(connectionSocket, filenames_bytes)
+
 
   print(data)
 

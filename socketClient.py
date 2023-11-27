@@ -20,6 +20,10 @@ print("connected to server")
 
 isConnected = True
 
+#
+receivingData = False
+#
+
 while isConnected:
     cmd = input("ftp > ").split(' ')
     send_file.sendData(clientSocket, cmd[0])
@@ -39,9 +43,22 @@ while isConnected:
         pass
     elif cmd[0] == "ls":
         # send format: "ls"
+        receivingData = True ##
         pass    
 
     # print("Sent Data to server!")
+
+    # Receiving data from the server
+    #send_file.recvData()
+
+    if receivingData == True:
+        # TODO -> Need to fix the broken pipe error when running the ls command for a second time
+        data = send_file.recvData(clientSocket, 1024)
+        data_decoded = data.decode('utf-8')
+
+        print(data_decoded)
+        receivingData = False
+
 
 print("Closing now...")
 
