@@ -8,7 +8,8 @@ def sendData(sock: socket.socket, data: str):
 
 def sendFile(sock: socket.socket, fileName: str):
     fileInput = open(fileName, 'r')
-    fileData = fileInput.read(65536)
+    # fileData = fileInput.read(65536)
+    fileData = fileInput.read()
 
     if fileData:
         dataSizeStr = str(len(fileData))
