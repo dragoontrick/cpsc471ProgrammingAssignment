@@ -1,5 +1,12 @@
 import socket
 
+#def sendFileNames(sock: socket.socket, data: list):
+#    numSent = 0
+#    # Send the data!
+#    while len(data) > numSent:
+#        numSent += sock.send(data.encode())
+
+
 def sendData(sock: socket.socket, data: str):
     numSent = 0
     # Send the data!
