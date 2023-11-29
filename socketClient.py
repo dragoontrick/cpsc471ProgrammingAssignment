@@ -25,42 +25,72 @@ receivingData = False
 #
 
 while isConnected:
-    cmd = input("ftp > ").split(' ')
-    send_file.sendData(clientSocket, cmd[0])
+    userInput = input("ftp > ").split(' ')
+    command = userInput[0]
+    commandLenStr = send_file.prepareSize(len(command), 4)
 
-    if cmd[0] == "quit":
+    if command == "quit":
         # send format: "quit"
         isConnected = False
+        send_file.sendData(clientSocket, commandLenStr + command)
         break
-    elif cmd[0] == "get":
-        # send format: "get <length of filename?> <FILENAME>"
-        fileName = cmd[1]
+    elif command == "get":
+        fileName = ""
+        if len(userInput) < 2:
+            fileName = input("ftp > Enter File Name: ")
+        else:
+            fileName = userInput[1]
+        
+        fileNamelenStr = send_file.prepareSize(len(fileName))
         # send fileName
-        send_file.sendData(clientSocket, fileName)
-        print("ftp > Getting " + fileName + " from server")
-    elif cmd[0] == "put":
-        # send format: "put <length of filename?> <FILENAME> <length of file> <FILEDATA>"
-        pass
-    elif cmd[0] == "ls":
-        # send format: "ls"
-        receivingData = True ##
-        pass    
+        # we have to send all data at once
+        # sends: "0003get0000000008file.txt"
+        print("    Getting " + fileName + " from server")
+        send_file.sendData(clientSocket, commandLenStr + command + fileNamelenStr + fileName)
 
-    # print("Sent Data to server!")
+        fileDataLength = int(send_file.recvData(clientSocket, 10).decode())
+        fileData = send_file.recvData(clientSocket, fileDataLength).decode()
+        # print(file)
+        if fileData == "FAILURE":
+            print("    ERROR file not found on server")
+            continue
+
+        filePath = "clientfiles/" + fileName
+        print("    Saving the file data to `" + filePath + "`")
+        try:
+            # tries to create a file if it DOES NOT exists
+            with open(filePath, 'x') as file:
+                file.write(fileData)
+        except FileExistsError:
+            # simply opens the file because it DOES exists 
+            with open(filePath, 'w') as file:
+                file.write(fileData)
+    elif command == "ls":
+        # send format: "ls"
+        # receivingData = True ##
+        send_file.sendData(clientSocket, commandLenStr + command)
+
+        fileNamesLength = int(send_file.recvData(clientSocket, 10).decode())
+        fileNames = send_file.recvData(clientSocket, fileNamesLength).decode()
+        print("    Files in Sever:")
+        fileNames = fileNames.split(' ')
+        for file in fileNames:
+            print("    -", file)
+
+    elif command == "put":
+        pass
+
 
     # Receiving data from the server
     #send_file.recvData()
 
-    if receivingData == True:
-        # TODO -> Need to fix the broken pipe error when running the ls command for a second time
-        data = send_file.recvData(clientSocket, 1024)
-        data_decoded = data.decode('utf-8')
+    # if receivingData == True:
+    #     # TODO -> Need to fix the broken pipe error when running the ls command for a second time
+    #     data = send_file.recvData(clientSocket, 1024)
+    #     data_decoded = data.decode('utf-8')
 
-        print(data_decoded)
-        receivingData = False
-
-
-print("Closing now...")
+    #     print(data_decoded)
+    #     receivingData = False
 
 # Close the socket
 clientSocket.close()
