@@ -29,7 +29,24 @@ while True:
   connectionSocket, addr = serverSocket.accept() 
   print("Accepted connection from client: ", addr)
   # Receive whatever the newly connected client has to send
-  data = connectionSocket.recv(40)
+  data = connectionSocket.recv(40).decode() 
+
+
+  #start of 11/28/2023 attempt
+  fileno = 0  #FileTransfer base number
+  filename = 'FileSentToServer' + str(fileno) + '.txt'  
+  fileno = fileno+1
+  fo = open(filename, "w")
+  while data:
+     if not data:
+         break
+     else:
+       fo.write(data)
+       data = connectionSocket.recv(1024).decode()
+  print()
+  print ('received file from client put command')
+  print()
+  fo.close()                       
 
   if data.decode("utf-8") == "ls":
     filenames = os.listdir('serverfiles')

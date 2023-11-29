@@ -40,7 +40,22 @@ while isConnected:
         print("ftp > Getting " + fileName + " from server")
     elif cmd[0] == "put":
         # send format: "put <length of filename?> <FILENAME> <length of file> <FILEDATA>"
-        pass
+        #send file to server
+        
+        #fileName = cmd[1]     following get command attempt
+        #put_file.putData(clientSocket, fileName)
+        #print("ftp > putting " + fileName + "to the server")
+        
+        filename = 'put.txt'
+        fi = open(filename, "r")
+        data = fi.read()
+        if not data:
+            break
+        while data:
+            clientSocket.send(str(data).encode())
+            data = fi.read()
+        fi.close() #close file after sending
+
     elif cmd[0] == "ls":
         # send format: "ls"
         receivingData = True ##
