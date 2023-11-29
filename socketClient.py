@@ -72,7 +72,7 @@ while isConnected:
 
         fileNamesLength = int(send_file.recvData(clientSocket, 10).decode())
         fileNames = send_file.recvData(clientSocket, fileNamesLength).decode()
-        print("    Files in Sever:")
+        print("    Files in Server:")
         fileNames = fileNames.split(' ')
         for file in fileNames:
             print("    -", file)
