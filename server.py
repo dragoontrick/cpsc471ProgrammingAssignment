@@ -1,11 +1,8 @@
 # import libraries for server code
 import socket
-import send_file 
+import datatransfer 
 
-#
 import os
-import pickle
-#
 
 # The port on which to listen
 serverPort = 1234
@@ -31,8 +28,8 @@ while True:
     connected = True
     while connected:
         print("    Waiting for command from client...")
-        commandLength = int(send_file.recvData(connectionSocket, 4).decode())
-        command = send_file.recvData(connectionSocket, commandLength).decode()
+        commandLength = int(datatransfer.recvData(connectionSocket, 4).decode())
+        command = datatransfer.recvData(connectionSocket, commandLength).decode()
         print("    [INFO] Recieved command:", command)
 
         succesful = True
@@ -42,11 +39,11 @@ while True:
             print("    [INFO] Closing connection with client:", addr)
             break  # breaks out of `while connected: ` loop
         elif command == "get":
-            fileNameLength = int(send_file.recvData(connectionSocket, 10).decode())
-            fileName = send_file.recvData(connectionSocket, fileNameLength).decode()
+            fileNameLength = int(datatransfer.recvData(connectionSocket, 10).decode())
+            fileName = datatransfer.recvData(connectionSocket, fileNameLength).decode()
             print("    [INFO] Recieved file name:", fileName)
 
-            if send_file.sendFile(connectionSocket, "serverfiles/" + fileName) < 0:
+            if datatransfer.sendFile(connectionSocket, "serverfiles/" + fileName) < 0:
                 succesful = False
 
         elif command == "ls":
@@ -56,9 +53,9 @@ while True:
             # TODO: might break for this `file hello.txt`
             filenames_string = ' '.join(filenames)
 
-            fileNamesLength = send_file.prepareSize(len(filenames_string))
+            fileNamesLength = datatransfer.prepareSize(len(filenames_string))
 
-            send_file.sendData(connectionSocket, fileNamesLength + filenames_string)
+            datatransfer.sendData(connectionSocket, fileNamesLength + filenames_string)
         
         if succesful:
             print("    [SUCCESS] Executed:", command)
