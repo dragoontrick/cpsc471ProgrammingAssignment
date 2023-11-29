@@ -1,7 +1,7 @@
 # Client code
 import socket
 
-import send_file
+import datatransfer
 
 # Name and port number of the server to
 # which want to connect .
@@ -27,12 +27,12 @@ receivingData = False
 while isConnected:
     userInput = input("ftp > ").split(' ')
     command = userInput[0]
-    commandLenStr = send_file.prepareSize(len(command), 4)
+    commandLenStr = datatransfer.prepareSize(len(command), 4)
 
     if command == "quit":
         # send format: "quit"
         isConnected = False
-        send_file.sendData(clientSocket, commandLenStr + command)
+        datatransfer.sendData(clientSocket, commandLenStr + command)
         break
     elif command == "get":
         fileName = ""
@@ -41,15 +41,15 @@ while isConnected:
         else:
             fileName = userInput[1]
         
-        fileNamelenStr = send_file.prepareSize(len(fileName))
+        fileNamelenStr = datatransfer.prepareSize(len(fileName))
         # send fileName
         # we have to send all data at once
         # sends: "0003get0000000008file.txt"
         print("    Getting " + fileName + " from server")
-        send_file.sendData(clientSocket, commandLenStr + command + fileNamelenStr + fileName)
+        datatransfer.sendData(clientSocket, commandLenStr + command + fileNamelenStr + fileName)
 
-        fileDataLength = int(send_file.recvData(clientSocket, 10).decode())
-        fileData = send_file.recvData(clientSocket, fileDataLength).decode()
+        fileDataLength = int(datatransfer.recvData(clientSocket, 10).decode())
+        fileData = datatransfer.recvData(clientSocket, fileDataLength).decode()
         # print(file)
         if fileData == "FAILURE":
             print("    ERROR file not found on server")
@@ -68,10 +68,10 @@ while isConnected:
     elif command == "ls":
         # send format: "ls"
         # receivingData = True ##
-        send_file.sendData(clientSocket, commandLenStr + command)
+        datatransfer.sendData(clientSocket, commandLenStr + command)
 
-        fileNamesLength = int(send_file.recvData(clientSocket, 10).decode())
-        fileNames = send_file.recvData(clientSocket, fileNamesLength).decode()
+        fileNamesLength = int(datatransfer.recvData(clientSocket, 10).decode())
+        fileNames = datatransfer.recvData(clientSocket, fileNamesLength).decode()
         print("    Files in Server:")
         fileNames = fileNames.split(' ')
         for file in fileNames:
@@ -82,11 +82,11 @@ while isConnected:
 
 
     # Receiving data from the server
-    #send_file.recvData()
+    #datatransfer.recvData()
 
     # if receivingData == True:
     #     # TODO -> Need to fix the broken pipe error when running the ls command for a second time
-    #     data = send_file.recvData(clientSocket, 1024)
+    #     data = datatransfer.recvData(clientSocket, 1024)
     #     data_decoded = data.decode('utf-8')
 
     #     print(data_decoded)
