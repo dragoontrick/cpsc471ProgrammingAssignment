@@ -6,32 +6,42 @@ import socket
 #    while len(data) > numSent:
 #        numSent += sock.send(data.encode())
 
+def prepareSize(length: int, byteLength: int = 10):
+    lenStr = str(length)
+    while len(lenStr) < byteLength:
+        lenStr = "0" + lenStr
+    return lenStr
+
 
 def sendData(sock: socket.socket, data: str):
     numSent = 0
     # Send the data!
-    while len(data) > numSent:
-        numSent += sock.send(data.encode())
+    bytesToSend = data.encode()
+    # in case of an error sending bytes, keep sending the remaining bytes
+    while numSent < len(bytesToSend):
+        numSent += sock.send(bytesToSend[numSent:])
 
 def sendFile(sock: socket.socket, fileName: str):
-    fileInput = open(fileName, 'r')
-    # fileData = fileInput.read(65536)
-    fileData = fileInput.read()
+    try: 
+        fileInput = open(fileName, 'r')
+        # fileData = fileInput.read(65536)
+        fileData = fileInput.read()
 
-    if fileData:
-        dataSizeStr = str(len(fileData))
-
-        # Prepend 0's to the size string
-        # until the size is 10 bytes
-        while len(dataSizeStr) < 10:
-            dataSizeStr = "0" + dataSizeStr
-        
-        sendData(sock, dataSizeStr)
-
-        # Prepend the size of the data to the
-        # file data.
-        # fileData = dataSizeStr + fileData	
-        sendData(sock, fileData)
+        if fileData:
+            dataSizeStr = prepareSize(len(fileData))
+            # Prepend the size of the data to the
+            # file data.
+            fileData = dataSizeStr + fileData
+            sendData(sock, fileData)
+            
+        fileInput.close()
+        return 0
+    except FileNotFoundError:
+        err = "FAILURE"
+        errSizeStr = prepareSize(len(err))
+        errData = errSizeStr + err
+        sendData(sock, errData)
+        return -1
 
 
 def recvData(sock: socket.socket, length: int):
@@ -41,7 +51,7 @@ def recvData(sock: socket.socket, length: int):
     
     while len(recvBuff) < length:
 		# Attempt to receive bytes
-        tmpBuff =  sock.recv(length)
+        tmpBuff = sock.recv(length)
         # The other side has closed the socket
         if not tmpBuff:
             break
