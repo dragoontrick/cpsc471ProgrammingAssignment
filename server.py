@@ -3,14 +3,22 @@ import socket
 import datatransfer 
 
 import os
+import sys
 
-# The port on which to listen
-serverPort = 1234
+# Command line checks
+if len(sys.argv) < 2:
+    print("USEAGE: python3 server.py <PORT NUMBER>")
+    sys.exit(1)
+
+# Getting the port on which to listen
+#serverPort = 1234
+serverPort = int(sys.argv[1])
 
 # Create a TCP socket
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+
 # Bind the socket to the port
-serverSocket.bind(("", serverPort))
+
 # Start listening for incoming connections
 serverSocket.listen(1)  # This number refers to the number of acceptable connections
 

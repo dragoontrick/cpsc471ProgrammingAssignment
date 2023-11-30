@@ -2,13 +2,34 @@
 import socket
 import datatransfer
 
-serverAddr = "localhost"
-serverPort = 1234 
+import sys
+
+# Command line checks
+if len(sys.argv) < 3:
+    print("USEAGE: python3 socketClient.py <server machine> <server port>")
+    sys.exit(1)
+
+# Getting port number and the name of the server we want to connect to
+serverAddr = sys.argv[1]
+serverPort = int(sys.argv[2])
+
+# Name and port number of the server to
+# which want to connect .
+# serverAddr = "csu.fullerton.edu" # only works with localhost?
+#serverAddr = "localhost"
+
 # Create a socket
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Connect to the server
-# print(socket.gethostbyname(serverAddr))
-clientSocket.connect((serverAddr, serverPort))
+
+try:
+    # Try connecting to the server on the port specified by the client
+    clientSocket.connect((serverAddr, serverPort))
+    #isConnected = True
+except ConnectionRefusedError:
+    print(f"Could not connect to {serverAddr}:{serverPort}. The server may not be currently running or the port is wrong.")
+    #isConnected = False
+    sys.exit(1)
+
 print("connected to server")
 
 # 
@@ -62,6 +83,11 @@ while isConnected:
             # simply opens the file because it DOES exists 
             with open(filePath, 'w') as file:
                 file.write(fileData)
+
+        print(f"    Data transfer complete! Filename: {fileName}, Bytes Transferred: {fileDataLength}")
+        #print(f"    Filename: {fileName}")
+        #print(f"    Bytes Transferred: {fileDataLength}")
+        
     elif command == "ls":
         # send format: "ls"
         datatransfer.sendData(clientSocket, commandLenStr + command)
