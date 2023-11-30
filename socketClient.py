@@ -30,21 +30,18 @@ except ConnectionRefusedError:
     #isConnected = False
     sys.exit(1)
 
-# Connect to the server
-#clientSocket.connect((serverAddr, serverPort))
-
 print("connected to server")
-# A string we want to send to the server
-# data = "Hello world ! This is a very long string."
-# # Send that string!
-# clientSocket.send(data.encode())
 
+# 
+# Packet Structure:
+#   1. First 4 bytes   = length of command, X
+#   2. Next X bytes    = command
+#   3. Next 10 bytes   = length of next data, Y
+#   4. Next Y bytes    = data
+# Repeat steps 3 and 4 if needed
+# send all data at once through `datatransfer.sendData(sock, packet)`
+# 
 isConnected = True
-
-#
-receivingData = False
-#
-
 while isConnected:
     userInput = input("ftp > ").split(' ')
     command = userInput[0]
@@ -57,27 +54,27 @@ while isConnected:
         break
     elif command == "get":
         fileName = ""
-        if len(userInput) < 2:
+        if len(userInput) < 2 or userInput[1] == "":
             fileName = input("ftp > Enter File Name: ")
         else:
             fileName = userInput[1]
         
         fileNamelenStr = datatransfer.prepareSize(len(fileName))
         # send fileName
-        # we have to send all data at once
         # sends: "0003get0000000008file.txt"
-        print("    Getting " + fileName + " from server")
+        print("Getting " + fileName + " from server")
         datatransfer.sendData(clientSocket, commandLenStr + command + fileNamelenStr + fileName)
 
         fileDataLength = int(datatransfer.recvData(clientSocket, 10).decode())
         fileData = datatransfer.recvData(clientSocket, fileDataLength).decode()
         # print(file)
         if fileData == "FAILURE":
-            print("    ERROR file not found on server")
+            print("ERROR file not found on server")
+            print("Try command `ls` to see list of files on server")
             continue
 
         filePath = "clientfiles/" + fileName
-        print("    Saving the file data to `" + filePath + "`")
+        print("Saving the file data to `" + filePath + "`")
         try:
             # tries to create a file if it DOES NOT exists
             with open(filePath, 'x') as file:
@@ -93,30 +90,17 @@ while isConnected:
         
     elif command == "ls":
         # send format: "ls"
-        # receivingData = True ##
         datatransfer.sendData(clientSocket, commandLenStr + command)
 
         fileNamesLength = int(datatransfer.recvData(clientSocket, 10).decode())
         fileNames = datatransfer.recvData(clientSocket, fileNamesLength).decode()
-        print("    Files in Server:")
+        print("Files in Server:")
         fileNames = fileNames.split(' ')
         for file in fileNames:
-            print("    -", file)
+            print("   -", file)
 
     elif command == "put":
         pass
-
-
-    # Receiving data from the server
-    #datatransfer.recvData()
-
-    # if receivingData == True:
-    #     # TODO -> Need to fix the broken pipe error when running the ls command for a second time
-    #     data = datatransfer.recvData(clientSocket, 1024)
-    #     data_decoded = data.decode('utf-8')
-
-    #     print(data_decoded)
-    #     receivingData = False
 
 # Close the socket
 clientSocket.close()
