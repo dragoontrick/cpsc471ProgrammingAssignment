@@ -33,9 +33,7 @@ while True:
 
 
   #start of 11/28/2023 attempt
-  fileno = 0  #FileTransfer base number
-  filename = 'FileSentToServer' + str(fileno) + '.txt'  
-  fileno = fileno+1
+  filename = 'FileSentToServer.txt'  
   fo = open(filename, "w")
   while data:
      if not data:
