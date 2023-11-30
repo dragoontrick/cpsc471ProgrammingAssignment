@@ -18,7 +18,7 @@ serverPort = int(sys.argv[1])
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 
 # Bind the socket to the port
-
+serverSocket.bind(("", serverPort))
 # Start listening for incoming connections
 serverSocket.listen(1)  # This number refers to the number of acceptable connections
 
