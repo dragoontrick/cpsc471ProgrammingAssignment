@@ -42,10 +42,12 @@ socketClient.py
 4. On the first terminal, run the server with:
 
         python3 server.py <ANY PORT NUMBER>
+        For example: python3 server.py 1234
 
-5. On the second terminal, run the client with:
+6. On the second terminal, run the client with:
 
         python3 socketClient.py <SERVER NAME> <SAME PORT NUMBER>
+        For example: python3 socketClient.py localhost 1234
 
 * You have to input **localhost** for the `<SERVER NAME>` and the **same** port number used to run the server
 
