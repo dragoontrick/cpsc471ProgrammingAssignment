@@ -117,8 +117,9 @@ while isConnected:
         fi = open("clientfiles/"+ fileName, "r") 
         
         dataT = fi.read()
+        fileDataLenStr = datatransfer.prepareSize(len(dataT))
 
-        datatransfer.sendData(clientSocket, commandLenStr + command + fileNamelenStr + fileName + dataT)
+        datatransfer.sendData(clientSocket, commandLenStr + command + fileNamelenStr + fileName + fileDataLenStr + dataT)
         fi.close() #end of previous
 
             # print(file)

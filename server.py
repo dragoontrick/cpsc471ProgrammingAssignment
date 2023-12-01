@@ -54,8 +54,9 @@ while True:
         elif command == "put":
             fileNameLength = int(datatransfer.recvData(connectionSocket, 10).decode())
             filename = datatransfer.recvData(connectionSocket, fileNameLength).decode()
-            
-            fileData = datatransfer.recvData(connectionSocket,13).decode()
+
+            fileDataLength = int(datatransfer.recvData(connectionSocket, 10).decode())
+            fileData = datatransfer.recvData(connectionSocket, fileDataLength).decode()    #
             
 
             filePath = "serverfiles/" + filename
