@@ -71,6 +71,6 @@ Once you run these two commands on different terminals, you should be connected 
       putting put.txt to server
       ftp > quit
 
-For "get" and "put" commands the base file must be properly located in the directory in order to be functional.
-So for "get" there must be an appropriate file on the serverside.
-For the "put" command, there should be an appropriate file on the client side.
+For "get" and "put" commands the base file must be properly located in the directory in order to be functional. 
+So for "get" there must be an appropriate file on the serverside. 
+For the "put" command, there should be an appropriate file on the client side. 
