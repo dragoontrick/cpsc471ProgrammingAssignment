@@ -51,6 +51,29 @@ while True:
             if datatransfer.sendFile(connectionSocket, "serverfiles/" + fileName) < 0:
                 succesful = False
 
+        elif command == "put":
+            fileNameLength = int(datatransfer.recvData(connectionSocket, 10).decode())
+            filename = datatransfer.recvData(connectionSocket, fileNameLength).decode()
+            
+            fileData = datatransfer.recvData(connectionSocket,13).decode()
+            
+
+            filePath = "serverfiles/" + filename
+            try:
+            # tries to create a file if it DOES NOT exists
+            
+
+                fo = open(filePath, 'x')
+                fo.write(fileData)
+                fo.close()
+            except FileExistsError:
+            # simply opens the file because it DOES exists 
+                fo = open(filePath, 'w')
+                fo.write(fileData)
+                fo.close()
+
+
+
         elif command == "ls":
             filenames = os.listdir('serverfiles')
             print("[INFO]", filenames)

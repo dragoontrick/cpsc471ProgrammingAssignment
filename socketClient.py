@@ -100,7 +100,28 @@ while isConnected:
             print("   -", file)
 
     elif command == "put":
-        pass
+        #filename = 'clientfiles/put.txt'
+        fileName = ""
+        if len(userInput) < 2 or userInput[1] == "":
+            fileName = input("ftp > Enter File Name: ")
+        else:
+            fileName = userInput[1]
+
+        fileNamelenStr = datatransfer.prepareSize(len(fileName))
+            # send fileName
+            # sends: "0003get0000000008file.txt"
+        print("putting " + fileName + " to server")
+        
+
+        fileNameLength = len(fileName) #added
+        fi = open("clientfiles/"+ fileName, "r") 
+        
+        dataT = fi.read()
+
+        datatransfer.sendData(clientSocket, commandLenStr + command + fileNamelenStr + fileName + dataT)
+        fi.close() #end of previous
+
+            # print(file)
 
 # Close the socket
 clientSocket.close()
