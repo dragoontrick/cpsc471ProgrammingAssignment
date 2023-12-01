@@ -51,4 +51,6 @@ socketClient.py
 
 * You have to input **localhost** for the `<SERVER NAME>` and the **same** port number used to run the server
 
-Once you run these two commands on different terminals, you should be connected and be able to run the ftp commands: `get`, `put`, `ls`, and `quit`
+Once you run these two commands on different terminals, you should be connected and be able to run the ftp commands on the client terminal: `get`, `put`, `ls`, and `quit`
+
+        
