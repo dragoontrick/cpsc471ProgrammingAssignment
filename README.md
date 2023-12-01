@@ -53,4 +53,17 @@ socketClient.py
 
 Once you run these two commands on different terminals, you should be connected and be able to run the ftp commands on the client terminal: `get`, `put`, `ls`, and `quit`
 
-        
+        Example output including the commands: 
+      ftp > ls
+      Files in Server:
+      - file1.txt
+      - put.txt
+      - file2.txt
+      ftp > get file1.txt
+      Getting file1.txt from server
+      Saving the file data to `clientfiles/file1.txt`
+      Data transfer complete! Filename: file1.txt, Bytes Transferred: 13
+      ftp > put
+      ftp > Enter File Name: put.txt
+      putting put.txt to server
+      ftp > quit
