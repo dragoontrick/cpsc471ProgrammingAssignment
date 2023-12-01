@@ -84,7 +84,7 @@ while isConnected:
             with open(filePath, 'w') as file:
                 file.write(fileData)
 
-        print(f"    Data transfer complete! Filename: {fileName}, Bytes Transferred: {fileDataLength}")
+        print(f"Data transfer complete! Filename: {fileName}, Bytes Transferred: {fileDataLength}")
         #print(f"    Filename: {fileName}")
         #print(f"    Bytes Transferred: {fileDataLength}")
         
