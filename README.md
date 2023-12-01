@@ -43,7 +43,7 @@ socketClient.py
 
         python3 server.py <ANY PORT NUMBER>
         For example: python3 server.py 1234
-        *If you dont properly close the running process by using keyboard interrupt or quit command then try using another port number if an error occurs*
+   *If you dont properly close the running process by using keyboard interrupt or quit command then try using another port number if an error occurs*
 
 6. On the second terminal, run the client with:
 
@@ -53,7 +53,9 @@ socketClient.py
 * You have to input **localhost** for the `<SERVER NAME>` and the **same** port number used to run the server
 
 Once you run these two commands on different terminals, you should be connected and be able to run the ftp commands on the client terminal: `get`, `put`, `ls`, and `quit`  
-*ONLY WORKS WITH .txt FILES*
+
+*ONLY WORKS WITH .txt FILES* 
+
         Example output including the commands: 
       ftp > ls
       Files in Server:
