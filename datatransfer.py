@@ -1,10 +1,5 @@
 import socket
 
-#def sendFileNames(sock: socket.socket, data: list):
-#    numSent = 0
-#    # Send the data!
-#    while len(data) > numSent:
-#        numSent += sock.send(data.encode())
 
 def prepareSize(length: int, byteLength: int = 10):
     lenStr = str(length)
@@ -21,10 +16,10 @@ def sendData(sock: socket.socket, data: str):
     while numSent < len(bytesToSend):
         numSent += sock.send(bytesToSend[numSent:])
 
+
 def sendFile(sock: socket.socket, fileName: str):
     try: 
         fileInput = open(fileName, 'r')
-        # fileData = fileInput.read(65536)
         fileData = fileInput.read()
 
         if fileData:

@@ -5,7 +5,7 @@ import datatransfer
 import sys
 
 # Command line checks
-if len(sys.argv) < 3:
+if len(sys.argv) != 3:
     print("USEAGE: python3 socketClient.py <server machine> <server port>")
     sys.exit(1)
 
@@ -13,21 +13,14 @@ if len(sys.argv) < 3:
 serverAddr = sys.argv[1]
 serverPort = int(sys.argv[2])
 
-# Name and port number of the server to
-# which want to connect .
-# serverAddr = "csu.fullerton.edu" # only works with localhost?
-#serverAddr = "localhost"
-
 # Create a socket
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
     # Try connecting to the server on the port specified by the client
     clientSocket.connect((serverAddr, serverPort))
-    #isConnected = True
 except ConnectionRefusedError:
     print(f"Could not connect to {serverAddr}:{serverPort}. The server may not be currently running or the port is wrong.")
-    #isConnected = False
     sys.exit(1)
 
 print("connected to server")
@@ -85,8 +78,6 @@ while isConnected:
                 file.write(fileData)
 
         print(f"Data transfer complete! Filename: {fileName}, Bytes Transferred: {fileDataLength}")
-        #print(f"    Filename: {fileName}")
-        #print(f"    Bytes Transferred: {fileDataLength}")
         
     elif command == "ls":
         # send format: "ls"
@@ -100,7 +91,6 @@ while isConnected:
             print("   -", file)
 
     elif command == "put":
-        #filename = 'clientfiles/put.txt'
         fileName = ""
         if len(userInput) < 2 or userInput[1] == "":
             fileName = input("ftp > Enter File Name: ")
@@ -121,8 +111,6 @@ while isConnected:
 
         datatransfer.sendData(clientSocket, commandLenStr + command + fileNamelenStr + fileName + fileDataLenStr + dataT)
         fi.close() #end of previous
-
-            # print(file)
 
 # Close the socket
 clientSocket.close()

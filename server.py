@@ -6,12 +6,11 @@ import os
 import sys
 
 # Command line checks
-if len(sys.argv) < 2:
+if len(sys.argv) != 2:
     print("USEAGE: python3 server.py <PORT NUMBER>")
     sys.exit(1)
 
 # Getting the port on which to listen
-#serverPort = 1234
 serverPort = int(sys.argv[1])
 
 # Create a TCP socket
@@ -62,8 +61,6 @@ while True:
             filePath = "serverfiles/" + filename
             try:
             # tries to create a file if it DOES NOT exists
-            
-
                 fo = open(filePath, 'x')
                 fo.write(fileData)
                 fo.close()
@@ -72,8 +69,6 @@ while True:
                 fo = open(filePath, 'w')
                 fo.write(fileData)
                 fo.close()
-
-
 
         elif command == "ls":
             filenames = os.listdir('serverfiles')
@@ -92,5 +87,6 @@ while True:
             print("[FAILURE] Tried to execute:", command)
     
     print("[DISCONNECTED] From client:", addr)
+    
     # Close the socket
     connectionSocket.close()
